@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — FundedEdge</title>
+    <meta name="description" content="Log in to your FundedEdge trading dashboard.">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar scrolled">
+        <div class="container">
+            <a href="/" class="logo">
+                <div class="logo-icon">FE</div>FundedEdge
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a><a href="/how-it-works">How It Works</a><a href="/challenges">Challenges</a>
+                <a href="/trading-rules">Rules</a><a href="/payouts">Payouts</a>
+                <a href="/faq">FAQ</a><a href="/affiliate">Affiliates</a><a href="/about">About</a>
+                <a href="/challenges" class="btn btn--primary nav-cta">Start Challenge</a>
+            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="section section--hero" style="min-height:100vh;display:flex;align-items:center;">
+        <div class="container" style="max-width:440px;">
+            <div class="text-center" style="margin-bottom:var(--space-2xl);">
+                <h1 style="font-size:2rem;">Welcome <span class="gradient-text">Back</span></h1>
+                <p style="color:var(--text-secondary);font-size:0.95rem;">Log in to access your trading dashboard.</p>
+            </div>
+
+            <div class="card auth-card">
+                <div id="loginError" class="auth-error" style="display:none;"></div>
+                <div id="loginSuccess" class="auth-success" style="display:none;"></div>
+
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="trader@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full btn--large" id="loginBtn">
+                        Log In →
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="/register" style="color:var(--accent-gold);">Create one</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const errorEl = document.getElementById('loginError');
+            const successEl = document.getElementById('loginSuccess');
+
+            btn.textContent = 'Logging in...';
+            btn.disabled = true;
+            errorEl.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    successEl.textContent = 'Login successful! Redirecting...';
+                    successEl.style.display = 'block';
+                    setTimeout(() => window.location.href = data.redirect, 500);
+                } else {
+                    errorEl.textContent = data.error;
+                    errorEl.style.display = 'block';
+                    btn.textContent = 'Log In →';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                errorEl.textContent = 'Network error. Please try again.';
+                errorEl.style.display = 'block';
+                btn.textContent = 'Log In →';
+                btn.disabled = false;
+            }
+        });
+
+        // Show success message if just registered
+        if (window.location.search.includes('registered=1')) {
+            const el = document.getElementById('loginSuccess');
+            el.textContent = 'Account created! Please log in.';
+            el.style.display = 'block';
+        }
+    </script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — FundedEdge</title>
+    <meta name="description" content="Create your FundedEdge account and start your trading challenge.">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar scrolled">
+        <div class="container">
+            <a href="/" class="logo">
+                <div class="logo-icon">FE</div>FundedEdge
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a><a href="/how-it-works">How It Works</a><a href="/challenges">Challenges</a>
+                <a href="/trading-rules">Rules</a><a href="/payouts">Payouts</a>
+                <a href="/faq">FAQ</a><a href="/affiliate">Affiliates</a><a href="/about">About</a>
+                <a href="/challenges" class="btn btn--primary nav-cta">Start Challenge</a>
+            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="section section--hero" style="min-height:100vh;display:flex;align-items:center;">
+        <div class="container" style="max-width:440px;">
+            <div class="text-center" style="margin-bottom:var(--space-2xl);">
+                <h1 style="font-size:2rem;">Create Your <span class="gradient-text">Account</span></h1>
+                <p style="color:var(--text-secondary);font-size:0.95rem;">Join thousands of funded traders worldwide.
+                </p>
+            </div>
+
+            <div class="card auth-card">
+                <div id="regError" class="auth-error" style="display:none;"></div>
+
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="trader@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Min 6 characters"
+                            minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full btn--large" id="regBtn">
+                        Create Account →
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="/login" style="color:var(--accent-gold);">Log in</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('regBtn');
+            const errorEl = document.getElementById('regError');
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                errorEl.textContent = 'Passwords do not match.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            btn.textContent = 'Creating account...';
+            btn.disabled = true;
+            errorEl.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fullName: document.getElementById('fullName').value,
+                        email: document.getElementById('email').value,
+                        password: password
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    window.location.href = data.redirect;
+                } else {
+                    errorEl.textContent = data.error;
+                    errorEl.style.display = 'block';
+                    btn.textContent = 'Create Account →';
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                errorEl.textContent = 'Network error. Please try again.';
+                errorEl.style.display = 'block';
+                btn.textContent = 'Create Account →';
+                btn.disabled = false;
+            }
+        });
+    </script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

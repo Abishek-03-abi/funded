@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — FundedEdge</title>
+    <meta name="description"
+        content="FundedEdge trader dashboard. Monitor your balance, equity, drawdown, and trade history.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">
+                <div class="logo-icon">FE</div>FundedEdge
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a><a href="/how-it-works">How It Works</a><a
+                    href="/challenges">Challenges</a>
+                <a href="/trading-rules">Rules</a><a href="/payouts">Payouts</a><a
+                    href="/dashboard">Dashboard</a>
+                <a href="/faq">FAQ</a><a href="/affiliate">Affiliates</a><a href="/about">About</a>
+                <a href="/challenges" class="btn btn--primary nav-cta">Start Challenge</a>
+            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div style="margin-bottom:var(--space-2xl)">
+                <p
+                    style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:var(--space-md)">
+                    Account</p>
+                <p style="font-weight:600" id="sb-account-size">...</p>
+                <p style="font-size:0.8rem;color:var(--green)" id="sb-status">● ...</p>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="active" data-tab="tab-overview">📊 Overview</a>
+                <a href="#" data-tab="tab-history">📈 Trade History</a>
+                <a href="#" data-tab="tab-withdrawals">💰 Withdrawals</a>
+                <a href="#" data-tab="tab-rules">📋 Rules Status</a>
+                <a href="#" data-tab="tab-leaderboard">🏆 Leaderboard</a>
+                <a href="#" data-tab="tab-settings">⚙️ Settings</a>
+            </nav>
+        </aside>
+
+        <!-- Main -->
+        <main class="dashboard-main">
+            <h2 style="margin-bottom:var(--space-sm)">Welcome back, <span class="gradient-text"
+                    id="dash-name">Trader</span></h2>
+            <p style="color:var(--text-muted);margin-bottom:var(--space-2xl);font-size:0.9rem" id="dash-subtitle">...
+            </p>
+
+            <!-- TAB: Overview -->
+            <div id="tab-overview" class="dash-tab active">
+                <div class="dash-stats">
+                    <div class="dash-stat-card">
+                        <div class="label">Balance</div>
+                        <div class="value" style="color:var(--text-primary)" id="val-balance">...</div>
+                        <div class="change" id="val-profit">...</div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="label">Equity</div>
+                        <div class="value" style="color:var(--text-primary)" id="val-equity">...</div>
+                        <div class="change" id="val-equity-diff">...</div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="label">Today's P&L</div>
+                        <div class="value" style="color:var(--green)" id="val-today">...</div>
+                        <div class="change" id="val-today-pct">...</div>
+                    </div>
+                    <div class="dash-stat-card">
+                        <div class="label">Available Payout</div>
+                        <div class="value" style="color:var(--accent-gold)" id="val-payout">...</div>
+                        <div class="change" style="color:var(--text-muted)">80% Profit Split</div>
+                    </div>
+                </div>
+
+                <div class="chart-placeholder" style="margin-top:var(--space-2xl)">
+                    <h4 style="margin-bottom:var(--space-lg)">Equity Curve</h4>
+                    <canvas id="equityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- TAB: Trade History -->
+            <div id="tab-history" class="dash-tab">
+                <div class="card" style="overflow-x:auto">
+                    <h4 style="margin-bottom:var(--space-lg)">Recent Trades</h4>
+                    <table class="data-table" id="trades-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Pair</th>
+                                <th>Type</th>
+                                <th>Lot</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>P&L</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-body">
+                            <tr>
+                                <td colspan="7" style="text-align:center">Loading trades...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: Withdrawals -->
+            <div id="tab-withdrawals" class="dash-tab">
+                <div class="card text-center" style="padding:var(--space-2xl);border-color:var(--border-accent)">
+                    <h3>Ready to Withdraw?</h3>
+                    <p style="color:var(--text-secondary);margin:var(--space-md) 0;font-size:0.9rem" id="withdraw-txt">
+                        Looking for eligible payouts...</p>
+                    <button class="btn btn--primary" id="withdraw-btn" disabled>Request Withdrawal →</button>
+                </div>
+            </div>
+
+            <!-- TAB: Rules Status -->
+            <div id="tab-rules" class="dash-tab">
+                <div class="card" style="padding:var(--space-xl)">
+                    <h4 style="margin-bottom:var(--space-lg)">Risk Status</h4>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-label">
+                            <span>Daily Loss Used</span><span id="prog-daily-txt" style="color:var(--green)">0.00% /
+                                5.00%</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="prog-daily-bar" style="width:0%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-bar-wrapper">
+                        <div class="progress-label">
+                            <span>Max Drawdown Used</span><span id="prog-max-txt" style="color:var(--green)">0.00% /
+                                10.00%</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="prog-max-bar" style="width:0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: Leaderboard -->
+            <div id="tab-leaderboard" class="dash-tab">
+                <div class="card" style="overflow-x:auto">
+                    <h4 style="margin-bottom:var(--space-lg)">Top Traders (Mock)</h4>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Trader</th>
+                                <th>Return</th>
+                                <th>Payout</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Alex M.</td>
+                                <td style="color:var(--green)">+12.4%</td>
+                                <td>$24,500</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Sarah T.</td>
+                                <td style="color:var(--green)">+11.2%</td>
+                                <td>$18,200</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>John D.</td>
+                                <td style="color:var(--green)">+9.8%</td>
+                                <td>$15,400</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB: Settings -->
+            <div id="tab-settings" class="dash-tab">
+                <div class="card" style="padding:var(--space-xl); max-width:600px">
+                    <h4 style="margin-bottom:var(--space-lg)">Account Settings</h4>
+                    <form class="auth-form" onsubmit="event.preventDefault(); alert('Settings saved!');">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" value="Trader" id="settings-name" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" value="trader@test.com" id="settings-email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Crypto Wallet Address (USDT TRC20)</label>
+                            <input type="text" placeholder="Enter wallet address for payouts">
+                        </div>
+                        <button type="submit" class="btn btn--primary" style="margin-top:var(--space-md)">Save
+                            Changes</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('/api/dashboard');
+                if (res.status === 401) {
+                    window.location.href = '/login';
+                    return;
+                }
+                const data = await res.json();
+
+                // Formatters
+                const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+                const num = new Intl.NumberFormat('en-US');
+
+                // Populate user info
+                if (data.user) {
+                    document.getElementById('dash-name').textContent = data.user.fullName.split(' ')[0];
+                }
+
+                // Populate stats
+                if (data.stats && data.challenge) {
+                    const c = data.challenge;
+                    const s = data.stats;
+
+                    document.getElementById('sb-account-size').textContent = money.format(s.accountSize) + ' Funded';
+
+                    const statusEl = document.getElementById('sb-status');
+                    statusEl.textContent = '● ' + s.status.charAt(0).toUpperCase() + s.status.slice(1);
+                    statusEl.style.color = s.status === 'active' ? 'var(--green)' : 'var(--red)';
+
+                    document.getElementById('dash-subtitle').textContent = money.format(s.accountSize) + ' Account · Day ' + Math.max(1, s.daysSinceStart);
+
+                    document.getElementById('val-balance').textContent = money.format(s.balance);
+
+                    const profitEl = document.getElementById('val-profit');
+                    const sign = s.profit >= 0 ? '+' : '';
+                    profitEl.textContent = sign + money.format(s.profit) + ' (' + sign + s.profitPercent + '%)';
+                    profitEl.className = 'change ' + (s.profit >= 0 ? 'positive' : 'negative');
+
+                    document.getElementById('val-equity').textContent = money.format(s.equity);
+                    const eqDiff = s.equity - s.accountSize;
+                    const eqSign = eqDiff >= 0 ? '+' : '';
+                    const eqDiffEl = document.getElementById('val-equity-diff');
+                    eqDiffEl.textContent = eqSign + money.format(eqDiff);
+                    eqDiffEl.className = 'change ' + (eqDiff >= 0 ? 'positive' : 'negative');
+
+                    const todayEl = document.getElementById('val-today');
+                    const todaySign = s.todayPnl >= 0 ? '+' : '';
+                    todayEl.textContent = todaySign + money.format(s.todayPnl);
+                    todayEl.style.color = s.todayPnl >= 0 ? 'var(--green)' : 'var(--red)';
+                    const todayPctEl = document.getElementById('val-today-pct');
+                    const tdPct = ((s.todayPnl / s.accountSize) * 100).toFixed(2);
+                    todayPctEl.textContent = todaySign + tdPct + '%';
+                    todayPctEl.className = 'change ' + (s.todayPnl >= 0 ? 'positive' : 'negative');
+
+                    document.getElementById('val-payout').textContent = money.format(s.availablePayout);
+
+                    // Progress Bars
+                    const dailyPct = s.dailyLossUsed.toFixed(2);
+                    document.getElementById('prog-daily-txt').textContent = dailyPct + '% / 5.00%';
+                    document.getElementById('prog-daily-bar').style.width = Math.min((dailyPct / 5) * 100, 100) + '%';
+                    if (dailyPct > 4) document.getElementById('prog-daily-bar').style.background = 'var(--red)';
+
+                    const maxPct = s.maxDrawdownUsed.toFixed(2);
+                    document.getElementById('prog-max-txt').textContent = maxPct + '% / 10.00%';
+                    document.getElementById('prog-max-bar').style.width = Math.min((maxPct / 10) * 100, 100) + '%';
+                    if (maxPct > 8) document.getElementById('prog-max-bar').style.background = 'var(--red)';
+
+                    // Withdraw logic
+                    const wTxt = document.getElementById('withdraw-txt');
+                    const wBtn = document.getElementById('withdraw-btn');
+                    if (s.availablePayout > 0) {
+                        wTxt.textContent = 'You have ' + money.format(s.availablePayout) + ' available for payout.';
+                        wBtn.disabled = false;
+                    } else {
+                        wTxt.textContent = 'No eligible profits for withdrawal yet.';
+                    }
+                }
+
+                // Populate Trades
+                const tbody = document.getElementById('trades-body');
+                tbody.innerHTML = '';
+                if (data.trades && data.trades.length > 0) {
+                    data.trades.forEach(t => {
+                        const tr = document.createElement('tr');
+                        const time = new Date(t.opened_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const typeColor = t.type.toLowerCase() === 'buy' ? 'var(--green)' : 'var(--red)';
+                        const pnlColor = t.pnl >= 0 ? 'var(--green)' : 'var(--red)';
+                        const pnlSign = t.pnl >= 0 ? '+' : '';
+
+                        tr.innerHTML = `
+                            <td>${time}</td>
+                            <td>${t.pair}</td>
+                            <td style="color:${typeColor}">${t.type}</td>
+                            <td>${t.lot_size}</td>
+                            <td>${t.entry_price}</td>
+                            <td>${t.exit_price || '-'}</td>
+                            <td style="color:${pnlColor}">${pnlSign}${money.format(t.pnl)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">No trades taken yet. Get started!</td></tr>';
+                }
+
+            } catch (e) {
+                console.error("Error loading dashboard data", e);
+            }
+        });
+    </script>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">FE</div>FundedEdge
+                    </div>
+                    <p>Empowering traders worldwide.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4><a href="/about">About</a><a href="/how-it-works">How It Works</a><a
+                        href="/faq">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Trading</h4><a href="/challenges">Challenges</a><a href="/trading-rules">Rules</a><a
+                        href="/payouts">Payouts</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4><a href="/legal">Terms</a><a href="/legal">Privacy</a><a
+                        href="/legal">Risk</a>
+                </div>
+            </div>
+            <div class="footer-bottom"><span>© 2026 FundedEdge. All rights reserved.</span></div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

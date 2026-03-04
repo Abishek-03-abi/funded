@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Rules — FundedEdge</title>
+    <meta name="description"
+        content="FundedEdge trading rules. Risk limits, prohibited strategies, and allowed trading methods.">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">
+                <div class="logo-icon">FE</div>FundedEdge
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a><a href="/how-it-works">How It Works</a><a
+                    href="/challenges">Challenges</a>
+                <a href="/trading-rules">Rules</a><a href="/payouts">Payouts</a><a
+                    href="/dashboard">Dashboard</a>
+                <a href="/faq">FAQ</a><a href="/affiliate">Affiliates</a><a href="/about">About</a>
+                <a href="/challenges" class="btn btn--primary nav-cta">Start Challenge</a>
+            </div>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </nav>
+
+    <section class="page-header">
+        <div class="container">
+            <span class="section-label">Trading Rules</span>
+            <h1>Know the <span class="gradient-text">Rules</span></h1>
+            <p>Clear, transparent trading rules. No hidden clauses, no surprises.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <!-- Risk Limits -->
+            <div class="rule-group reveal">
+                <h3><span class="icon icon--blue">📊</span> Risk Limits</h3>
+                <div class="card" style="overflow-x:auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Rule</th>
+                                <th>Limit</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Daily Loss Limit</strong></td>
+                                <td style="color:var(--red);font-weight:600">5%</td>
+                                <td>Maximum loss in a single day based on starting equity.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Maximum Drawdown</strong></td>
+                                <td style="color:var(--red);font-weight:600">10%</td>
+                                <td>Max drawdown from initial balance. Below this = breach.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Profit Target</strong></td>
+                                <td style="color:var(--green);font-weight:600">8%</td>
+                                <td>Evaluation phase target. Not applicable when funded.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Min Trading Days</strong></td>
+                                <td style="font-weight:600">5 days</td>
+                                <td>Must trade on at least 5 calendar days.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Max Leverage</strong></td>
+                                <td style="font-weight:600">1:100</td>
+                                <td>Forex 1:100, Indices 1:50, Crypto 1:10.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glow-divider"></div>
+
+            <!-- Prohibited -->
+            <div class="rule-group reveal">
+                <h3><span class="icon icon--red">🚫</span> Prohibited Strategies</h3>
+                <p style="color:var(--text-secondary);margin-bottom:var(--space-lg);font-size:0.9rem;">These will result
+                    in account termination and profit forfeiture.</p>
+                <ul class="rule-list">
+                    <li class="prohibited"><strong>Arbitrage Trading</strong> — Exploiting price differences between
+                        brokers.</li>
+                    <li class="prohibited"><strong>High-Frequency Trading</strong> — Hundreds of orders per second.</li>
+                    <li class="prohibited"><strong>Tick Scalping</strong> — Opening/closing within 1-2 ticks.</li>
+                    <li class="prohibited"><strong>Latency Abuse</strong> — Exploiting feed or execution delays.</li>
+                    <li class="prohibited"><strong>Copy Trading Between Accounts</strong> — Duplicating trades across
+                        FundedEdge accounts.</li>
+                    <li class="prohibited"><strong>Account Sharing</strong> — Only the registered holder may trade.</li>
+                    <li class="prohibited"><strong>Martingale Without Stop Loss</strong> — Position stacking without
+                        risk management.</li>
+                </ul>
+            </div>
+
+            <div class="glow-divider"></div>
+
+            <!-- Allowed -->
+            <div class="rule-group reveal">
+                <h3><span class="icon icon--green">✅</span> Allowed Strategies</h3>
+                <ul class="rule-list">
+                    <li class="allowed"><strong>News Trading</strong> — Trade during high-impact news freely.</li>
+                    <li class="allowed"><strong>Expert Advisors (EAs)</strong> — Bots allowed if not HFT or
+                        latency-based.</li>
+                    <li class="allowed"><strong>Swing Trading</strong> — Overnight and weekend holds permitted.</li>
+                    <li class="allowed"><strong>Scalping</strong> — Allowed (min 15-second hold time).</li>
+                    <li class="allowed"><strong>Hedging</strong> — Opposing positions on same instrument OK.</li>
+                    <li class="allowed"><strong>All Markets</strong> — Forex, Gold, Indices, Crypto.</li>
+                </ul>
+            </div>
+
+            <div class="glow-divider"></div>
+
+            <!-- Violations -->
+            <div class="rule-group reveal">
+                <h3><span class="icon icon--red">⚠️</span> Rule Violations</h3>
+                <div class="grid-3">
+                    <div class="card">
+                        <h4 style="color:var(--accent-gold);margin-bottom:var(--space-sm)">Soft Breach</h4>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;">Daily loss exceeded — all trades
+                            closed, no trading that day.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color:var(--red);margin-bottom:var(--space-sm)">Hard Breach</h4>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;">Max drawdown exceeded — account
+                            terminated, fee forfeited.</p>
+                    </div>
+                    <div class="card">
+                        <h4 style="color:var(--red);margin-bottom:var(--space-sm)">Strategy Violation</h4>
+                        <p style="color:var(--text-secondary);font-size:0.9rem;">Prohibited strategy used — termination
+                            and potential ban.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="card text-center reveal" style="padding:var(--space-3xl);border-color:var(--border-accent);">
+                <h2>Rules Clear? <span class="gradient-text">Let's Trade.</span></h2>
+                <p style="color:var(--text-secondary);margin:var(--space-lg) auto;max-width:500px;">Pick your challenge
+                    and start trading with confidence.</p>
+                <a href="/challenges" class="btn btn--primary btn--large">Start Your Challenge →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-icon">FE</div>FundedEdge
+                    </div>
+                    <p>Empowering traders worldwide with funded accounts up to $200,000.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4><a href="/about">About</a><a href="/how-it-works">How It Works</a><a
+                        href="/affiliate">Affiliates</a><a href="/faq">FAQ</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Trading</h4><a href="/challenges">Challenges</a><a href="/trading-rules">Rules</a><a
+                        href="/payouts">Payouts</a><a href="/dashboard">Dashboard</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4><a href="/legal">Terms</a><a href="/legal">Privacy</a><a
+                        href="/legal">Risk</a><a href="/legal">Refund</a>
+                </div>
+            </div>
+            <div class="footer-bottom"><span>© 2026 FundedEdge. All rights reserved.</span>
+                <div class="footer-legal"><a href="/legal">Terms</a><a href="/legal">Privacy</a></div>
+            </div>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
